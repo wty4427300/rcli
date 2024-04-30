@@ -1,4 +1,4 @@
-use anyhow::{self, Error};
+use anyhow::Result;
 use csv::Reader;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -20,7 +20,7 @@ struct Player {
     kit: u8,
 }
 
-pub fn process_csv(input: &str, output: String, format: OutputFormat) -> Result<(), Error> {
+pub fn process_csv(input: &str, output: String, format: OutputFormat) -> Result<()> {
     let mut reader = Reader::from_path(input)?;
     let mut ret = Vec::with_capacity(128);
     let headers = reader.headers()?.clone();
