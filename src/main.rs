@@ -13,13 +13,18 @@ fn main() -> anyhow::Result<()> {
             process_csv(&opts.input, output, opts.format)?
         }
         Subcommands::GenPass(opts) => {
-            let result=process_genpass(opts.length, opts.uppercase, opts.lowercase, opts.number, opts.symbol);
+            let result = process_genpass(
+                opts.length,
+                opts.uppercase,
+                opts.lowercase,
+                opts.number,
+                opts.symbol,
+            );
             match result {
                 Ok(_) => {
-                    println!("{:?}",result.expect("error"));
+                    println!("{:?}", result.expect("error"));
                 }
                 Err(_) => todo!(),
-                
             }
         }
     }
