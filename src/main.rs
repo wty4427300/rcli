@@ -27,6 +27,7 @@ fn main() -> anyhow::Result<()> {
                 Err(_) => todo!(),
             }
         }
+        Subcommands::Base64(_) => todo!(),
     }
     Ok(())
 }

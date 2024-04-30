@@ -1,22 +1,7 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use std::fmt;
-use std::{path::Path, str::FromStr};
-
-#[derive(Parser, Debug)]
-#[command(name="rcli",version,author,long_about=None)]
-pub struct Ops {
-    #[command(subcommand)]
-    pub cmd: Subcommands,
-}
-
-#[derive(Subcommand, Debug)]
-pub enum Subcommands {
-    #[command(name = "csv", about = "Show CSV,Convert CSV to other formats")]
-    Csv(CsvOpts),
-    #[command(name = "genpass", about = "pass")]
-    GenPass(GenPassOpts),
-}
+use std::str::FromStr;
 
 #[derive(Subcommand, Debug, Clone, Copy)]
 pub enum OutputFormat {
@@ -40,32 +25,6 @@ pub struct CsvOpts {
 
     #[arg(long, default_value_t = true)]
     pub header: bool,
-}
-
-#[derive(Parser, Debug)]
-pub struct GenPassOpts {
-    #[arg(short, long, default_value_t = 16)]
-    pub length: u8,
-
-    #[arg(long, default_value_t = true)]
-    pub uppercase: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub lowercase: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub number: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub symbol: bool,
-}
-
-fn verify_input_file(file_name: &str) -> Result<String, &'static str> {
-    if Path::new(file_name).exists() {
-        Ok(file_name.into())
-    } else {
-        Err("File not found")
-    }
 }
 
 fn parser_format(format: &str) -> Result<OutputFormat, anyhow::Error> {
