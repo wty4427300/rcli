@@ -1,5 +1,5 @@
 use clap::Parser;
-use rcli::{process_csv, process_genpass, Ops, Subcommands};
+use rcli::{process_csv, process_genpass, Ops, Subcommands, Base64SubCommand,process_decode,process_encode};
 
 fn main() -> anyhow::Result<()> {
     let opts = Ops::parse();
@@ -19,15 +19,8 @@ fn main() -> anyhow::Result<()> {
                 opts.lowercase,
                 opts.number,
                 opts.symbol,
-            );
-            match result {
-                Ok(_) => {
-                    println!("{:?}", result.expect("error"));
-                }
-                Err(_) => todo!(),
-            }
+            )?;
         }
-        Subcommands::Base64(_) => todo!(),
     }
     Ok(())
 }

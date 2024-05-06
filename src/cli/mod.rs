@@ -2,6 +2,7 @@ mod base64;
 mod csv;
 mod genpass;
 
+use std::path::Path;
 use clap::Parser;
 
 //使用self是为了不和create csv产生歧义
@@ -14,7 +15,7 @@ pub struct Ops {
     pub cmd: Subcommands,
 }
 
-#[derive(Subcommand, Debug)]
+#[derive(Parser, Debug)]
 pub enum Subcommands {
     #[command(name = "csv", about = "Show CSV,Convert CSV to other formats")]
     Csv(CsvOpts),

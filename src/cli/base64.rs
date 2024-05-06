@@ -1,3 +1,5 @@
+use std::str::FromStr;
+use std::fmt;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -40,7 +42,7 @@ impl From<Base64Format> for &'static str {
     }
 }
 
-impl FromStr for OutputFormat {
+impl FromStr for Base64Format {
     type Err = anyhow::Error;
 
     fn from_str(value: &str) -> Result<Self, Self::Err> {
