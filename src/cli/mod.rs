@@ -26,7 +26,7 @@ pub enum Subcommands {
 }
 
 fn verify_input_file(file_name: &str) -> Result<String, &'static str> {
-    if file_name = "-" || Path::new(file_name).exists() {
+    if file_name == "-" || Path::new(file_name).exists() {
         Ok(file_name.into())
     } else {
         Err("File not found")

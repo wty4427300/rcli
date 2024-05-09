@@ -12,8 +12,8 @@ pub fn process_encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
     let mut buf = Vec::new();
     reader.read_to_end(&mut buf)?;
     let encode = match format {
-        Base64Format::Standard => BASE64_STANDARD.encode(buf),
-        Base64Format::UrlSafe => BASE64_URL_SAFE.encode(buf),
+        Base64Format::Standard => BASE64_STANDARD.encode(&buf),
+        Base64Format::UrlSafe => BASE64_URL_SAFE.encode(&buf),
     };
     println!("{}", encode);
     Ok(())
@@ -29,9 +29,20 @@ pub fn process_decode(output: &str, format: Base64Format) -> anyhow::Result<()> 
     reader.read_to_end(&mut buf)?;
 
     let decode = match format {
-        Base64Format::Standard => BASE64_STANDARD.decode(output)?,
-        Base64Format::UrlSafe => BASE64_URL_SAFE.decode(output)?,
+        Base64Format::Standard => BASE64_STANDARD.decode(&buf)?,
+        Base64Format::UrlSafe => BASE64_URL_SAFE.decode(&buf)?,
     };
     println!("{}", String::from_utf8(decode)?);
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test() {
+        let str = "-";
+        let _ = process_encode(str, Base64Format::Standard);
+    }
 }

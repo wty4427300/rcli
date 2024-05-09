@@ -3,6 +3,8 @@ use clap::{Parser, Subcommand};
 use std::fmt;
 use std::str::FromStr;
 
+use super::verify_input_file;
+
 #[derive(Subcommand, Debug, Clone, Copy)]
 pub enum OutputFormat {
     Json,
@@ -11,13 +13,13 @@ pub enum OutputFormat {
 
 #[derive(Parser, Debug)]
 pub struct CsvOpts {
-    #[arg(short,long,value_parser = verify_input_file)]
+    #[arg(short, long, value_parser = verify_input_file)]
     pub input: String,
 
     #[arg(short, long)]
     pub output: Option<String>,
 
-    #[arg(long, value_parser=parser_format ,default_value = "json")]
+    #[arg(long, value_parser = parser_format, default_value = "json")]
     pub format: OutputFormat,
 
     #[arg(short, long, default_value_t = ',')]
