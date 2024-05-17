@@ -23,7 +23,7 @@ fn main() -> anyhow::Result<()> {
                 opts.number,
                 opts.symbol,
             )?;
-            println!("{:?}", result.as_str());
+            println!("{:?}", result);
         }
         Subcommands::Base64(subcmd) => match subcmd {
             Base64SubCommand::Encode(opts) => {
