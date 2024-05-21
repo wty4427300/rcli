@@ -1,8 +1,9 @@
 use clap::Parser;
 use std::fmt;
+use std::path::PathBuf;
 use std::str::FromStr;
 
-use super::verify_file;
+use super::{verify_file, verify_path};
 
 #[derive(Parser, Debug)]
 pub enum TextSubCommand {
@@ -10,6 +11,12 @@ pub enum TextSubCommand {
     Sign(TextSingOpts),
     #[command(about = "verify a signed message")]
     Verify(TextVerifyOpts),
+    #[command(about = "Generate a new key")]
+    Generate(KeyGenerateOpts),
+    #[command(about = "Encrypt a message use cha-cha20-poly1305.")]
+    Encrypt(TextEncryptOpts),
+    #[command(about = "Decrypt a message use cha-cha20-poly1305.")]
+    Decrypt(TextDecryptOpts),
 }
 
 #[derive(Parser, Debug)]
@@ -33,6 +40,31 @@ pub struct TextVerifyOpts {
     #[arg(long, default_value = "blake3", value_parser = parse_text_sign_format)]
     pub format: TextSignFormat,
 }
+
+#[derive(Parser, Debug)]
+pub struct KeyGenerateOpts {
+    #[arg(long, default_value = "blake3", value_parser = parse_text_sign_format)]
+    pub format: TextSignFormat,
+    #[arg(short, long, value_parser = verify_path)]
+    pub output_path: PathBuf,
+}
+
+#[derive(Debug, Parser)]
+pub struct TextEncryptOpts {
+    #[arg(short, long, value_parser = verify_file, default_value = "-")]
+    pub input: String,
+    #[arg(short, long)]
+    pub key: String,
+}
+
+#[derive(Debug, Parser)]
+pub struct TextDecryptOpts {
+    #[arg(short, long, value_parser = verify_file, default_value = "-")]
+    pub input: String,
+    #[arg(short, long)]
+    pub key: String,
+}
+
 
 #[derive(Debug, Clone, Copy)]
 pub enum TextSignFormat {

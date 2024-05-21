@@ -3,11 +3,11 @@ mod csv;
 mod genpass;
 mod text;
 
-use std::path::Path;
 use clap::Parser;
+use std::path::{Path, PathBuf};
 
 //使用self是为了不和create csv产生歧义
-pub use self::{base64::*, csv::*, genpass::*,text::*};
+pub use self::{base64::*, csv::*, genpass::*, text::*};
 
 #[derive(Parser, Debug)]
 #[command(name="rcli",version,author,long_about=None)]
@@ -33,6 +33,16 @@ fn verify_file(file_name: &str) -> Result<String, &'static str> {
         Ok(file_name.into())
     } else {
         Err("File not found")
+    }
+}
+
+fn verify_path(path: &str) -> Result<PathBuf, &'static str> {
+    // if input is "-" or file exists
+    let p = Path::new(path);
+    if p.exists() && p.is_dir() {
+        Ok(path.into())
+    } else {
+        Err("Path does not exist or is not a directory")
     }
 }
 
