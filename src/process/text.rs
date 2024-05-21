@@ -256,7 +256,9 @@ mod tests {
     fn test_chacha20poly1305_encrypt_decrypt() -> Result<()> {
         let key = ChaCha20Poly1305Key::load("fixtures/chacha20poly1305.txt")?;
 
-        let data = b"hello world";
+        let vec = fs::read("fixtures/blake3.txt")?;
+        let data = vec.as_slice();
+        //let data = b"hello world";
         let ciphertext = key.encrypt(&mut &data[..])?;
         let plaintext = key.decrypt(&mut ciphertext.as_bytes())?;
         assert_eq!(data, plaintext.as_bytes());
