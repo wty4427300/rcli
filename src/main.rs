@@ -3,7 +3,7 @@ use clap::Parser;
 use rcli::{
     get_content, get_reader, process_csv, process_decode, process_encode, process_genpass,
     process_text_decrypt, process_text_encrypt, process_text_key_generate, process_text_sign,
-    process_text_verify, Base64SubCommand, Ops, Subcommands, TextSubCommand,
+    process_text_verify, process_jwt_decode, process_jwt_encode, Base64SubCommand, Ops, Subcommands, TextSubCommand, JwtSubCommand,
 };
 use std::fs;
 
@@ -75,6 +75,18 @@ fn main() -> anyhow::Result<()> {
                 println!("{}", encrypted);
             }
         },
+        Subcommands::Jwt(cmd) => {
+            match cmd {
+                JwtSubCommand::Sign(opts) => {
+                    let token = process_jwt_encode(&opts.key, opts.key_type, &opts.sub, &opts.aud, opts.exp, opts.algorithm)?;
+                    println!("{}", token);
+                }
+                JwtSubCommand::Verify(opts) => {
+                    let claim = process_jwt_decode(&opts.key, opts.key_type, &opts.token, opts.algorithm, &opts.aud)?;
+                    println!("sub: {}, aud: {}, exp: {}", claim.sub, claim.aud, claim.exp);
+                }
+            }
+        }
     }
     Ok(())
 }

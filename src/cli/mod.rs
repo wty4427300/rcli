@@ -2,15 +2,16 @@ mod base64;
 mod csv;
 mod genpass;
 mod text;
+mod jwt;
 
 use clap::Parser;
 use std::path::{Path, PathBuf};
 
 //使用self是为了不和create csv产生歧义
-pub use self::{base64::*, csv::*, genpass::*, text::*};
+pub use self::{base64::*, csv::*, genpass::*, text::*, jwt::*};
 
 #[derive(Parser, Debug)]
-#[command(name="rcli",version,author,long_about=None)]
+#[command(name = "rcli", version, author, long_about = None)]
 pub struct Ops {
     #[command(subcommand)]
     pub cmd: Subcommands,
@@ -26,6 +27,8 @@ pub enum Subcommands {
     Base64(Base64SubCommand),
     #[command(subcommand, name = "text", about = "text")]
     Text(TextSubCommand),
+    #[command(subcommand, about = "JWT encode/decode")]
+    Jwt(JwtSubCommand),
 }
 
 fn verify_file(file_name: &str) -> Result<String, &'static str> {
@@ -49,6 +52,7 @@ fn verify_path(path: &str) -> Result<PathBuf, &'static str> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
     fn test_verify_input_file() {
         assert_eq!(verify_file("-"), Ok("-".into()));
