@@ -67,11 +67,11 @@ fn main() -> anyhow::Result<()> {
                 }
             }
             TextSubCommand::Decrypt(opts) => {
-                let decrypted = process_text_encrypt(&opts.input, &opts.key)?;
+                let decrypted = process_text_decrypt(&opts.input, &opts.key)?;
                 println!("{}", decrypted);
             }
             TextSubCommand::Encrypt(opts) => {
-                let encrypted = process_text_decrypt(&opts.input, &opts.key)?;
+                let encrypted = process_text_encrypt(&opts.input, &opts.key)?;
                 println!("{}", encrypted);
             }
         },
