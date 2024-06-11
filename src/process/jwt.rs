@@ -1,4 +1,3 @@
-use std::fmt;
 use std::ops::Add;
 
 use std::time::{Duration, SystemTime};
