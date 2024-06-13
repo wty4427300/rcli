@@ -3,6 +3,7 @@ mod csv;
 mod genpass;
 mod text;
 mod jwt;
+mod http;
 
 use clap::Parser;
 use std::path::{Path, PathBuf};
