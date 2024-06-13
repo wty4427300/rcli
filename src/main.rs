@@ -86,6 +86,9 @@ fn main() -> anyhow::Result<()> {
                     println!("sub: {}, aud: {}, exp: {}", claim.sub, claim.aud, claim.exp);
                 }
             }
+        },
+        Subcommands::Http(cmd)=>{
+
         }
     }
     Ok(())

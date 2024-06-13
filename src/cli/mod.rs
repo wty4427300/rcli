@@ -9,7 +9,7 @@ use clap::Parser;
 use std::path::{Path, PathBuf};
 
 //使用self是为了不和create csv产生歧义
-pub use self::{base64::*, csv::*, genpass::*, text::*, jwt::*};
+pub use self::{base64::*, csv::*, genpass::*, text::*, jwt::*, http::*};
 
 #[derive(Parser, Debug)]
 #[command(name = "rcli", version, author, long_about = None)]
@@ -30,6 +30,8 @@ pub enum Subcommands {
     Text(TextSubCommand),
     #[command(subcommand, about = "JWT encode/decode")]
     Jwt(JwtSubCommand),
+    #[command(subcommand, about = "serve http server")]
+    Http(HttpSubCommand),
 }
 
 fn verify_file(file_name: &str) -> Result<String, &'static str> {
