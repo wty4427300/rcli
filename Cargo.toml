@@ -23,3 +23,7 @@ toml = "0.8.12"
 zxcvbn = "3.0.1"
 humantime = "2.1.0"
 jsonwebtoken = "9.3.0"
+tokio = { version = "1.38.0", features = ["rt", "rt-multi-thread", "net", "fs"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+axum = { version = "0.7.5", features = ["http2", "query", "tracing"] }
