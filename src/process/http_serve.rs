@@ -10,12 +10,11 @@ struct HttpServeState {
     path: PathBuf,
 }
 
-pub async fn process_http_server(path: &Path, port: u16) -> Result<()> {
+pub async fn process_http_server(path: &std::path::Path, port: u16) -> Result<()> {
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
-    info!("serving {:?} on port {}",path,port);
+    println!("serving {:?} on port {}", path, port);
 
-    let router = Router::new()
-        .route("/", get(file_handler()));
+    let router = Router::new().route("/", get(file_handler()));
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, router).await?;
     Ok(())
