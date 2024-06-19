@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 use clap::Parser;
-use std::str::FromStr;
 
 use super::verify_path;
 

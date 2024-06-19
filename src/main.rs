@@ -3,11 +3,13 @@ use clap::Parser;
 use rcli::{
     get_content, get_reader, process_csv, process_decode, process_encode, process_genpass,
     process_text_decrypt, process_text_encrypt, process_text_key_generate, process_text_sign,
-    process_text_verify, process_jwt_decode, process_jwt_encode, Base64SubCommand, Ops, Subcommands, TextSubCommand, JwtSubCommand,
+    process_text_verify, process_jwt_decode, process_jwt_encode, process_http_server, Base64SubCommand, Ops, Subcommands, TextSubCommand, JwtSubCommand, HttpSubCommand,
 };
 use std::fs;
 
-fn main() -> anyhow::Result<()> {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    tracing_subscriber::fmt::init();
     let opts = Ops::parse();
     match opts.cmd {
         Subcommands::Csv(opts) => {
@@ -86,9 +88,13 @@ fn main() -> anyhow::Result<()> {
                     println!("sub: {}, aud: {}, exp: {}", claim.sub, claim.aud, claim.exp);
                 }
             }
-        },
-        Subcommands::Http(cmd)=>{
-
+        }
+        Subcommands::Http(cmd) => {
+            match cmd {
+                HttpSubCommand::Serve(opts) => {
+                    process_http_server(&opts.dir, opts.port).await?;
+                }
+            }
         }
     }
     Ok(())
