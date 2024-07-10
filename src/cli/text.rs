@@ -21,9 +21,9 @@ pub enum TextSubCommand {
 
 #[derive(Parser, Debug)]
 pub struct TextSingOpts {
-    #[arg(short, long, value_parser=verify_file, default_value="-")]
+    #[arg(short, long, value_parser = verify_file, default_value = "-")]
     pub input: String,
-    #[arg(short, long, value_parser=verify_file)]
+    #[arg(short, long, value_parser = verify_file)]
     pub key: String,
     #[arg(long, default_value = "blake3", value_parser = parse_text_sign_format)]
     pub format: TextSignFormat,
@@ -31,9 +31,9 @@ pub struct TextSingOpts {
 
 #[derive(Parser, Debug)]
 pub struct TextVerifyOpts {
-    #[arg(short, long, value_parser=verify_file, default_value="-")]
+    #[arg(short, long, value_parser = verify_file, default_value = "-")]
     pub input: String,
-    #[arg(short, long, value_parser=verify_file)]
+    #[arg(short, long, value_parser = verify_file)]
     pub key: String,
     #[arg(long)]
     pub sig: String,
