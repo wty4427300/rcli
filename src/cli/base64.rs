@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use std::fmt;
 use clap::Parser;
-
+use crate::{CmdExecutor, process_decode, process_encode};
 use super::verify_file;
 
 #[derive(Parser, Debug)]
@@ -56,6 +56,22 @@ impl FromStr for Base64Format {
             "standard" => Ok(Base64Format::Standard),
             "urlsafe" => Ok(Base64Format::UrlSafe),
             v => anyhow::bail!("Unsupported format: {}", v),
+        }
+    }
+}
+
+impl CmdExecutor for Base64SubCommand {
+    async fn execute(self) -> anyhow::Result<()> {
+        match self {
+            Base64SubCommand::Encode(opts) => {
+                let encoded = process_encode(&opts.input, opts.format)?;
+                Ok(println!("{}", encoded))
+            }
+            Base64SubCommand::Decode(opts) => {
+                let decoded = process_decode(&opts.output, opts.format)?;
+                let decoded = String::from_utf8(decoded)?;
+                Ok(println!("{}", decoded))
+            }
         }
     }
 }

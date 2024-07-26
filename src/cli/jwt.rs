@@ -5,6 +5,7 @@ use std::time::Duration;
 use clap::Parser;
 use jsonwebtoken::errors::Error;
 use jsonwebtoken::Algorithm;
+use crate::{CmdExecutor, process_jwt_decode, process_jwt_encode};
 use super::verify_file;
 
 #[derive(Debug, Parser)]
@@ -111,5 +112,20 @@ impl From<JwtKeyType> for &str {
 impl fmt::Display for JwtKeyType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", Into::<&'static str>::into(*self))
+    }
+}
+
+impl CmdExecutor for JwtSubCommand {
+    async fn execute(self) -> anyhow::Result<()> {
+        match self {
+            JwtSubCommand::Sign(opts) => {
+                let token = process_jwt_encode(&opts.key, opts.key_type, &opts.sub, &opts.aud, opts.exp, opts.algorithm)?;
+                Ok(println!("{}", token))
+            }
+            JwtSubCommand::Verify(opts) => {
+                let claim = process_jwt_decode(&opts.key, opts.key_type, &opts.token, opts.algorithm, &opts.aud)?;
+                Ok(println!("sub: {}, aud: {}, exp: {}", claim.sub, claim.aud, claim.exp))
+            }
+        }
     }
 }

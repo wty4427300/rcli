@@ -7,7 +7,7 @@ mod http;
 
 use clap::Parser;
 use std::path::{Path, PathBuf};
-
+use crate::{CmdExecutor};
 //使用self是为了不和create csv产生歧义
 pub use self::{base64::*, csv::*, genpass::*, text::*, jwt::*, http::*};
 
@@ -32,6 +32,19 @@ pub enum Subcommands {
     Jwt(JwtSubCommand),
     #[command(subcommand, about = "serve http server")]
     Http(HttpSubCommand),
+}
+
+impl CmdExecutor for Subcommands {
+    async fn execute(self) -> anyhow::Result<()> {
+        match self {
+            Subcommands::Base64(opts) => opts.execute().await,
+            Subcommands::Text(opts) => opts.execute().await,
+            Subcommands::Jwt(opts) => opts.execute().await,
+            Subcommands::Http(opts) => opts.execute().await,
+            Subcommands::Csv(opts) => opts.execute().await,
+            Subcommands::GenPass(opts) => opts.execute().await,
+        }
+    }
 }
 
 fn verify_file(file_name: &str) -> Result<String, &'static str> {
