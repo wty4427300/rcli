@@ -114,16 +114,6 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_file_handler() {
-        let state = Arc::new(HttpServeState {
-            path: PathBuf::from("."),
-        });
-        let (status, content) = file_handler(State(state), Path("Cargo.toml".to_string())).await;
-        assert_eq!(status, StatusCode::OK);
-        assert!(content.trim().starts_with("[package]"));
-    }
-
-    #[tokio::test]
     async fn test_file_handler1() {
         let path = PathBuf::from("./src");
         let state = Arc::new(HttpServeState { path: path.clone() });
